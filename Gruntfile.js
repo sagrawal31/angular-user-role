@@ -19,7 +19,7 @@ module.exports = function (grunt) {
         yeoman: yeomanConfig,
         uglify: {
             build: {
-                src: "<%=yeoman.dist %>/angular-roles.js",
+                src: "<%=yeoman.src %>/angular-roles.js",
                 dest: "<%=yeoman.dist %>/angular-roles.min.js"
             }
         }

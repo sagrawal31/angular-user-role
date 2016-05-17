@@ -1,13 +1,11 @@
-"use strict";
-
 var rolesApp = angular.module("angular.roles", []);
 
 /**
  * @ngdoc service
- * @name SecurityService
+ * @name securityService
  */
-rolesApp.factory("SecurityService", ["$rootScope", function($rootScope) {
-    var allRoles, currentUserRoles;
+rolesApp.factory("securityService", ["$rootScope", function($rootScope) {
+    var currentUserRoles;
 
     return {
         /**
@@ -28,6 +26,7 @@ rolesApp.factory("SecurityService", ["$rootScope", function($rootScope) {
 
             var ifAnyGranted = false;
 
+            console.log(roles, userRoles)
             angular.forEach(roles, function(role) {
                 if (userRoles.indexOf(role) > -1) {
                     ifAnyGranted = true;
@@ -38,12 +37,11 @@ rolesApp.factory("SecurityService", ["$rootScope", function($rootScope) {
         },
         loggedIn: function(loggedInUserRoles) {
             currentUserRoles = loggedInUserRoles;
+            $rootScope.$broadcast("login.state", {loggedIn: true});
         },
         loggedOut: function() {
             currentUserRoles = undefined;
-        },
-        setRoles: function(roles) {
-            allRoles = roles;
+            $rootScope.$broadcast("login.state", {loggedIn: false});
         }
     };
 }]);
@@ -52,7 +50,7 @@ rolesApp.factory("SecurityService", ["$rootScope", function($rootScope) {
  * @ngdoc directive
  * @name ifAnyGranted
  */
-rolesApp.directive("ifAnyGranted", ["SecurityService", "ngIfDirective", function(securityService, ngIfDirective) {
+rolesApp.directive("ifAnyGranted", ["securityService", "ngIfDirective", function(securityService, ngIfDirective) {
     // There can be multiple directives with name "ngIf". Get the Angular's "ngIf" directive.
     var ngIf = ngIfDirective[0];
 
@@ -64,18 +62,29 @@ rolesApp.directive("ifAnyGranted", ["SecurityService", "ngIfDirective", function
         link: function($scope, $element, $attr) {
             // If someone uses "if-any-granted" directive along with "ng-if" directive
             var existingNgIf = $attr.ngIf;
-            var hasRole = securityService.ifAnyGranted($attr.ifAnyGranted);
+            var hasRole = false;
+
+            function checkRole(){
+                hasRole = securityService.ifAnyGranted($attr.ifAnyGranted.split(","));
+            }
+
+            checkRole();
 
             var ifEvaluator;
             if (existingNgIf) {
-                ifEvaluator = function () {
+                // Merge existing "ng-if" condition
+                ifEvaluator = function() {
                     return $scope.$eval(existingNgIf) && hasRole;
                 };
             } else {
-                ifEvaluator = function () {
+                ifEvaluator = function() {
                     return hasRole;
                 };
             }
+
+            $scope.$on("login.state", function() {
+                checkRole();
+            });
 
             $attr.ngIf = ifEvaluator;
             ngIf.link.apply(ngIf, arguments);
