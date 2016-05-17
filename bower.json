@@ -1,0 +1,10 @@
+{
+  "name": "angular-roles",
+  "description": "Provides simple role based access control for Angular based applications.",
+  "main": "dist/angular-roles.js",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "angular": "^1.5.5"
+  }
+}
