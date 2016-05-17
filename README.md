@@ -1,6 +1,6 @@
 # Angular User Role
 
-Insired by Grails [Spring Security Core](http://grails.org/plugin/spring-security-core) plugin concept of roles and [TagLib](http://grails-plugins.github.io/grails-spring-security-core/v2/guide/helperClasses.html#securityTagLib).
+Inspired by Grails [Spring Security Core](http://grails.org/plugin/spring-security-core) plugin concept of roles and [TagLib](http://grails-plugins.github.io/grails-spring-security-core/v2/guide/helperClasses.html#securityTagLib).
 
 This library provides a simple vanilla access control for your Angular application. By definition role is named set of
 abilities (permissions) by which specific group of users is identified. Role names can be like `ROLE_ADMIN`,
@@ -8,19 +8,19 @@ abilities (permissions) by which specific group of users is identified. Role nam
 
 ## Usage
 
-1. Install via Bower
+### 1. Install via Bower
 
     bower install angular-user-role --save
 
-2. Add the script to your main HTML file (like `index.html`)
+### 2. Add the script to your main HTML file (like `index.html`)
 
     <script src="bower_components/angular-user-role/dist/angular-user-role.min.js"></script>
 
-3. Add dependency to your application
+### 3. Add dependency to your application
 
     var myApp = angular.module("foo", ["angular.user.role", "others"]);
 
-4. In your application, when a user logs in or logs out, do the following:
+### 4. In your application, when a user logs in or logs out, do the following:
 
 ```
 myApp.controller("LoginController", ["$scope", "$http", "securityService", function($scope, $http, securityService) {
@@ -46,16 +46,16 @@ myApp.controller("LoginController", ["$scope", "$http", "securityService", funct
 }]);
 ```
 
-5. Now use it in your HTML
+### 5. Now use it in your HTML
 
 #### if-any-granted
 
 Displays the element content if at least one of the listed roles are granted to the current logged in user.
 
 ```
-    <div class="thumbnail" if-any-granted="ROLE_ADMIN,ROLE_USER">
-        <-- Your content here -->
-    </div>
+<div class="thumbnail" if-any-granted="ROLE_ADMIN,ROLE_USER">
+    <-- Your content here -->
+</div>
 ```
 
 *If the user is not logged in then the content will be hidden/removed*

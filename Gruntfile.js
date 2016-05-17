@@ -2,12 +2,6 @@
 
 "use strict";
 
-var mountFolder;
-
-mountFolder = function (connect, dir) {
-    return connect["static"](require("path").resolve(dir));
-};
-
 module.exports = function (grunt) {
     var yeomanConfig;
     require("matchdep").filterDev("grunt-*").forEach(grunt.loadNpmTasks);
