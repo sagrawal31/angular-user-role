@@ -1,15 +1,11 @@
 {
-  "name": "angular-roles",
+  "name": "angular-user-role",
   "version": "0.0.0",
   "dependencies": {},
-  "devDependencies" : {
-    "mocha" : "*",
-    "chai" : "*",
-    "sinon" : "*",
-    "grunt" : "*",
-    "grunt-contrib-coffee": "*",
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-bump": "^0.8.0",
     "grunt-contrib-uglify": "*",
-    "matchdep": "*",
-    "grunt-mocha-test": "*"
+    "matchdep": "*"
   }
 }

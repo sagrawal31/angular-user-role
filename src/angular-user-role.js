@@ -1,4 +1,6 @@
-var rolesApp = angular.module("angular.roles", []);
+"use strict";
+
+var rolesApp = angular.module("angular.user.role", []);
 
 /**
  * @ngdoc service
@@ -26,7 +28,6 @@ rolesApp.factory("securityService", ["$rootScope", function($rootScope) {
 
             var ifAnyGranted = false;
 
-            console.log(roles, userRoles)
             angular.forEach(roles, function(role) {
                 if (userRoles.indexOf(role) > -1) {
                     ifAnyGranted = true;
