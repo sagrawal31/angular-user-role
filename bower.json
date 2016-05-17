@@ -1,10 +1,23 @@
 {
-  "name": "angular-roles",
-  "description": "Provides simple role based access control for Angular based applications.",
-  "main": "dist/angular-roles.js",
-  "version": "0.0.0",
-  "dependencies": {},
-  "devDependencies": {
-    "angular": "^1.5.5"
-  }
+    "name": "angular-roles",
+    "description": "Provides simple role based access control for Angular based applications.",
+    "main": "src/angular-roles.js",
+    "dependencies": {},
+    "devDependencies": {
+        "angular": "^1.5.5"
+    },
+    "authors": [
+        "Shashank Agrawal <shagrawal99@gmail.com"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "src"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:sagrawal14/angular-roles.git"
+    }
 }
