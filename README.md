@@ -58,7 +58,17 @@ Displays the element content if at least one of the listed roles are granted to 
 </div>
 ```
 
+or
+
+```
+<if-any-granted roles="ROLE_ADMIN,ROLE_USER">
+    <div class="thumbnail">Hello</div>
+</if-any-granted>
+```
+
 *If the user is not logged in then the content will be hidden/removed*
+
+#### if-logged-in
 
 In the above all directives, the behaviour of `ng-if` directive is used i.e. if any of the roles based authentication
 results in `false` then the respective DOM element will be removed from the DOM.

@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         yeoman: yeomanConfig,
         uglify: {
             build: {
-                src: "<%=yeoman.src %>/angular-user-role.js",
+                src: ["<%=yeoman.src %>/app.js", "<%=yeoman.src %>/**/*.js"],
                 dest: "<%=yeoman.dist %>/angular-user-role.min.js"
             }
         },
@@ -34,6 +34,15 @@ module.exports = function (grunt) {
                 prereleaseName: false,
                 metadata: "",
                 regExp: false
+            }
+        },
+        watch: {
+            scripts: {
+                files: ["<%=yeoman.src %>/**/*.js"],
+                tasks: ["uglify"],
+                options: {
+                    spawn: false
+                }
             }
         }
     }, grunt.registerTask("default", ["uglify"]));
