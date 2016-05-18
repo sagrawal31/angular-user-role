@@ -108,6 +108,22 @@ angular.module("angular.user.role").factory("securityService", ["$rootScope", "n
 
             $attr.ngIf = ifEvaluator;
             ngIf.link.apply(ngIf, args);
+        },
+        /**
+         * This is private internal method to provide the common structure of the directives provided by this library.
+         * @returns {{transclude: *, priority: number, terminal: *, restrict: string}}
+         * @private
+         */
+        _directiveObject: function() {
+            return {
+                transclude: ngIf.transclude,
+                // Execute the directive before the "ng-if" directive on the same element (if any)
+                priority: ngIf.priority - 1,
+                terminal: ngIf.terminal,
+                restrict: "EA",
+                // Do not create a new scope, use parent scope
+                scope: false
+            };
         }
     };
 }]);
