@@ -124,6 +124,69 @@ or
 **_Note_**: In the above all directives, the behaviour of `ng-if` directive is used i.e. if any of the role based
 authentication results in `false` then the respective DOM element will be removed from the DOM.
 
+## Testing
+
+Consider there are 4 roles available in the system: `ROLE_ADMIN, ROLE_USER, ROLE_ORGANIZATION_MANAGER, ROLE_ACCOUNTANT`
+and the currently logged in user has only `ROLE_USER` & `ROLE_ACCOUNTANT` then the following should be true (Run when
+user is logged in and logged out):
+
+```
+<if-logged-in>I should only be visible when the user is logged in.<br></if-logged-in>
+<div if-logged-in>I should only be visible when the user is logged in.<br></div>
+<div if-logged-in ng-if="false">I should not be visible in any case.</div>
+<div if-logged-in ng-if="true">I should only be visible when the user is logged in.</div>
+
+<if-not-logged-in>I should only be visible when the user is not logged in.<br></if-not-logged-in>
+<div if-not-logged-in>I should only be visible when the user is not logged in.<br></div>
+<div if-not-logged-in ng-if="false">I should not be visible in any case<br></div>
+
+<if-any-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="true">
+    I should be visible when user is logged in.<br>
+</if-any-granted>
+
+<div if-any-granted="ROLE_USER,ROLE_ADMIN" ng-if="true">
+    I should be visible when user is logged in.<br>
+</div>
+
+<if-any-granted roles="ROLE_ADMIN, ROLE_USER">
+    I should be visible when user is logged in.<br>
+</if-any-granted>
+
+<if-any-granted roles="ROLE_ADMIN,ROLE_ORGANIZATION_MANAGER">
+    I should not be visible when user is logged in or not logged in.<br>
+</if-any-granted>
+
+<if-any-granted roles="ROLE_ADMIN, ROLE_USER, ROLE_ACCOUNTANT" ng-if="false">
+    I should not be visible in any case.<br>
+</if-any-granted>
+
+<div if-any-granted="ROLE_USER" ng-if="false">
+    I should not be visible in any case.<br>
+</div>
+
+<if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="true">
+    I should not be visible in any case.<br>
+</if-all-granted>
+
+<if-all-granted roles="ROLE_ADMIN, ROLE_USER">I should not be visible in any case.</if-all-granted>
+<if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="false">I should not be visible.</if-all-granted>
+
+<div if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="false">I should not be visible.</div>
+<div if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="true">I should not be visible.</div>
+
+<if-all-granted roles="ROLE_USER" ng-if="true">
+    I should be visible only when the user is logged in.<br>
+</if-all-granted>
+
+<div if-all-granted="ROLE_USER,ROLE_ACCOUNTANT" ng-if="true">
+    I should be visible only when the user is logged in.<br>
+</div>
+
+<div if-all-granted="ROLE_USER" ng-if="false">
+    I should not be visible in any case.<br>
+</div>
+```
+
 ## Development & Contributions
 
 Pull requests are welcome :-)
