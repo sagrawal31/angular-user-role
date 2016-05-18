@@ -110,7 +110,8 @@ angular.module("angular.user.role").factory("securityService", ["$rootScope", "n
             ngIf.link.apply(ngIf, args);
         },
         /**
-         * This is private internal method to provide the common structure of the directives provided by this library.
+         * This is private internal method to provide the directive definition object for the directives provided by
+         * this library.
          * @returns {{transclude: *, priority: number, terminal: *, restrict: string}}
          * @private
          */
@@ -120,9 +121,7 @@ angular.module("angular.user.role").factory("securityService", ["$rootScope", "n
                 // Execute the directive before the "ng-if" directive on the same element (if any)
                 priority: ngIf.priority - 1,
                 terminal: ngIf.terminal,
-                restrict: "EA",
-                // Do not create a new scope, use parent scope
-                scope: false
+                restrict: "EA"
             };
         }
     };
