@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Angular User Role by sagrawal14</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Angular User Role</h1>
+      <h2 class="project-tagline">Simple role based access control for Angular application (Inspired by Grails + Spring Security Core plugin)</h2>
+      <a href="https://github.com/sagrawal14/angular-user-role" class="btn">View on GitHub</a>
+      <a href="https://github.com/sagrawal14/angular-user-role/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/sagrawal14/angular-user-role/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="angular-user-role" class="anchor" href="#angular-user-role" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Angular User Role</h1>
+
+<p>Inspired by Grails <a href="http://grails.org/plugin/spring-security-core">Spring Security Core</a> plugin concept of roles and <a href="http://grails-plugins.github.io/grails-spring-security-core/v2/guide/helperClasses.html#securityTagLib">TagLib</a>.</p>
+
+<p>This library provides a simple vanilla access control for your Angular application. By definition role is named set of
+abilities (permissions) by which specific group of users is identified. Role names can be like <code>ROLE_ADMIN</code>,
+<code>ROLE_ORGANIZATION_MANAGER</code> or <code>roleAccountant</code>.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="1-install-via-bower" class="anchor" href="#1-install-via-bower" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Install via Bower</h3>
+
+<pre><code>bower install angular-user-role --save
+</code></pre>
+
+<h3>
+<a id="2-add-the-script-to-your-main-html-file-like-indexhtml" class="anchor" href="#2-add-the-script-to-your-main-html-file-like-indexhtml" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Add the script to your main HTML file (like <code>index.html</code>)</h3>
+
+<pre><code>&lt;script src="bower_components/angular-user-role/dist/angular-user-role.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h3>
+<a id="3-add-dependency-to-your-application" class="anchor" href="#3-add-dependency-to-your-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Add dependency to your application</h3>
+
+<pre><code>var myApp = angular.module("foo", ["angular.user.role", "others"]);
+</code></pre>
+
+<h3>
+<a id="4-in-your-application-when-a-user-logs-in-or-logs-out-do-the-following" class="anchor" href="#4-in-your-application-when-a-user-logs-in-or-logs-out-do-the-following" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. In your application, when a user logs in or logs out, do the following:</h3>
+
+<pre><code>myApp.controller("LoginController", ["$scope", "$http", "securityService", function($scope, $http, securityService) {
+
+    $scope.doLogin = function() {
+        $http.post('/api/login', {username: "foo", password: "bar"}).then(function(resp) {
+            // Successfully logged in
+
+            // Notify the security service that current logged in user following roles where roles should be an array
+             of string like: ["ROLE_ADMIN", "ROLE_ORGANIZATION_MANAGER"]
+            securityService.loggedIn(resp.data.roles);
+        });
+    };
+
+    $scope.logout = function() {
+        $http.post('/api/logout').then(function() {
+            // Successfully logged out
+
+            // Notify the security service that user has logged out
+            securityService.loggedOut();
+        });
+    };
+}]);
+</code></pre>
+
+<h3>
+<a id="5-now-use-it-in-your-html" class="anchor" href="#5-now-use-it-in-your-html" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5. Now use it in your HTML</h3>
+
+<h4>
+<a id="if-logged-in" class="anchor" href="#if-logged-in" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>if-logged-in</h4>
+
+<p>Displays the inner body content (element type) or the whole element (attribute type) if the user is authenticated or
+logged in.</p>
+
+<pre><code>&lt;if-logged-in&gt;This content will be visible when user is logged in&lt;/if-logged-in&gt;
+
+&lt;div if-logged-in&gt;This content will also be visible when user is logged in&lt;/div&gt;
+
+&lt;div if-logged-in ng-if="someOtherCondition"&gt;
+    This content will be visible when user is logged in and "someOtherCondition" is true
+&lt;/div&gt;
+</code></pre>
+
+<h4>
+<a id="if-not-logged-in" class="anchor" href="#if-not-logged-in" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>if-not-logged-in</h4>
+
+<p>Displays the inner body content (element type) or the whole element (attribute type) if the user is not authenticated or
+not logged in.</p>
+
+<pre><code>&lt;if-not-logged-in&gt;This content will be visible when user is not logged in&lt;/if-not-logged-in&gt;
+
+&lt;div if-not-logged-in&gt;This content will also be visible when user is not logged in&lt;/div&gt;
+
+&lt;div if-not-logged-in ng-if="someOtherCondition"&gt;
+    This content will only be visible when the user is not logged in and "someOtherCondition" is true
+&lt;/div&gt;
+</code></pre>
+
+<h4>
+<a id="if-any-granted" class="anchor" href="#if-any-granted" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>if-any-granted</h4>
+
+<p>Displays the element if at least one of the listed roles are granted to the current logged in user.</p>
+
+<pre><code>&lt;div class="thumbnail" if-any-granted="ROLE_ADMIN,ROLE_USER"&gt;
+    &lt;-- Your content here --&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>&lt;if-any-granted roles="ROLE_ADMIN,ROLE_USER"&gt;
+    &lt;div class="thumbnail"&gt;Hello&lt;/div&gt;
+&lt;/if-any-granted&gt;
+</code></pre>
+
+<p><em>If the user is not logged in then the content or element will be hidden/removed.</em></p>
+
+<h4>
+<a id="if-all-granted" class="anchor" href="#if-all-granted" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>if-all-granted</h4>
+
+<p>Displays the element if all the listed roles are granted to the current logged in user.</p>
+
+<pre><code>&lt;div class="thumbnail" if-all-granted="ROLE_ADMIN,ROLE_USER"&gt;
+    &lt;-- Your content here --&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>&lt;if-all-granted roles="ROLE_ADMIN,ROLE_USER"&gt;
+    &lt;div class="thumbnail"&gt;Hello&lt;/div&gt;
+&lt;/if-all-granted&gt;
+</code></pre>
+
+<p><em>If the user is not logged in then the content or element will be hidden/removed.</em></p>
+
+<h1></h1>
+
+<p><strong><em>Note</em></strong>: In the above all directives, the behaviour of <code>ng-if</code> directive is used i.e. if any of the role based
+authentication results in <code>false</code> then the respective DOM element will be removed from the DOM.</p>
+
+<h2>
+<a id="testing" class="anchor" href="#testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing</h2>
+
+<p>Consider there are 4 roles available in the system: <code>ROLE_ADMIN, ROLE_USER, ROLE_ORGANIZATION_MANAGER, ROLE_ACCOUNTANT</code>
+and the currently logged in user has only <code>ROLE_USER</code> &amp; <code>ROLE_ACCOUNTANT</code> then the following should be true (Run when
+user is logged in and logged out):</p>
+
+<pre><code>&lt;if-logged-in&gt;I should only be visible when the user is logged in.&lt;br&gt;&lt;/if-logged-in&gt;
+&lt;div if-logged-in&gt;I should only be visible when the user is logged in.&lt;br&gt;&lt;/div&gt;
+&lt;div if-logged-in ng-if="false"&gt;I should not be visible in any case.&lt;/div&gt;
+&lt;div if-logged-in ng-if="true"&gt;I should only be visible when the user is logged in.&lt;/div&gt;
+
+&lt;if-not-logged-in&gt;I should only be visible when the user is not logged in.&lt;br&gt;&lt;/if-not-logged-in&gt;
+&lt;div if-not-logged-in&gt;I should only be visible when the user is not logged in.&lt;br&gt;&lt;/div&gt;
+&lt;div if-not-logged-in ng-if="false"&gt;I should not be visible in any case&lt;br&gt;&lt;/div&gt;
+
+&lt;if-any-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="true"&gt;
+    I should be visible when user is logged in.&lt;br&gt;
+&lt;/if-any-granted&gt;
+
+&lt;div if-any-granted="ROLE_USER,ROLE_ADMIN" ng-if="true"&gt;
+    I should be visible when user is logged in.&lt;br&gt;
+&lt;/div&gt;
+
+&lt;if-any-granted roles="ROLE_ADMIN, ROLE_USER"&gt;
+    I should be visible when user is logged in.&lt;br&gt;
+&lt;/if-any-granted&gt;
+
+&lt;if-any-granted roles="ROLE_ADMIN,ROLE_ORGANIZATION_MANAGER"&gt;
+    I should not be visible when user is logged in or not logged in.&lt;br&gt;
+&lt;/if-any-granted&gt;
+
+&lt;if-any-granted roles="ROLE_ADMIN, ROLE_USER, ROLE_ACCOUNTANT" ng-if="false"&gt;
+    I should not be visible in any case.&lt;br&gt;
+&lt;/if-any-granted&gt;
+
+&lt;div if-any-granted="ROLE_USER" ng-if="false"&gt;
+    I should not be visible in any case.&lt;br&gt;
+&lt;/div&gt;
+
+&lt;if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="true"&gt;
+    I should not be visible in any case.&lt;br&gt;
+&lt;/if-all-granted&gt;
+
+&lt;if-all-granted roles="ROLE_ADMIN, ROLE_USER"&gt;I should not be visible in any case.&lt;/if-all-granted&gt;
+&lt;if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="false"&gt;I should not be visible.&lt;/if-all-granted&gt;
+
+&lt;div if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="false"&gt;I should not be visible.&lt;/div&gt;
+&lt;div if-all-granted roles="ROLE_ADMIN, ROLE_USER" ng-if="true"&gt;I should not be visible.&lt;/div&gt;
+
+&lt;if-all-granted roles="ROLE_USER" ng-if="true"&gt;
+    I should be visible only when the user is logged in.&lt;br&gt;
+&lt;/if-all-granted&gt;
+
+&lt;div if-all-granted="ROLE_USER,ROLE_ACCOUNTANT" ng-if="true"&gt;
+    I should be visible only when the user is logged in.&lt;br&gt;
+&lt;/div&gt;
+
+&lt;div if-all-granted="ROLE_USER" ng-if="false"&gt;
+    I should not be visible in any case.&lt;br&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h2>
+<a id="development--contributions" class="anchor" href="#development--contributions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development &amp; Contributions</h2>
+
+<p>Pull requests are welcome :-)</p>
+
+<h2>
+<a id="releasing-new-version" class="anchor" href="#releasing-new-version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Releasing new version</h2>
+
+<pre><code>grunt uglify
+grunt bump:patch
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/sagrawal14/angular-user-role">Angular User Role</a> is maintained by <a href="https://github.com/sagrawal14">sagrawal14</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
